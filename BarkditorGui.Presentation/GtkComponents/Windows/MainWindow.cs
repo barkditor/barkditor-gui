@@ -11,6 +11,7 @@ class MainWindow : Window
     public MainWindow() : this(new Builder("MainWindow.glade")) { }
     private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
     {
+        
         var cssProvider = new CssProvider();
         cssProvider.LoadFromPath("../../../CSS/style.css");
         builder.Autoconnect(this);
