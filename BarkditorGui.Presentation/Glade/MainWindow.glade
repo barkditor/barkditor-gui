@@ -4,7 +4,7 @@
   <requires lib="gtk+" version="3.18"/>
   <object class="GtkWindow" id="MainWindow">
     <property name="can-focus">False</property>
-    <property name="title" translatable="yes">Example Window</property>
+    <property name="title" translatable="yes">Barkditor</property>
     <property name="default-width">480</property>
     <property name="default-height">240</property>
     <child>
@@ -87,7 +87,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkMenuItem" id="_aboutButton">
+                      <object class="GtkMenuItem" id="_aboutMenuItem">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label">_About Barkditor</property>

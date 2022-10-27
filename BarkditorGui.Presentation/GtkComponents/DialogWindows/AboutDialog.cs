@@ -6,9 +6,10 @@ namespace BarkditorGui.Presentation.GtkComponents.DialogWindows;
 
 public class AboutDialog : Dialog
 {
-    [UI] private readonly Button _cancelButton;
-
-    public AboutDialog() : this(new Builder("AboutDialog.glade")) { }
+    public AboutDialog(Window parent) : this(new Builder("AboutDialog.glade"))
+    {
+        Parent = parent;
+    }
 
     private AboutDialog(Builder builder) : base(builder.GetRawOwnedObject("AboutDialog"))
     {
@@ -18,11 +19,10 @@ public class AboutDialog : Dialog
 
         StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 800);
         
-        DeleteEvent += CloseApp;
-        _cancelButton.Clicked += CloseApp;
+        DeleteEvent += CloseDialog;
     }
 
-    private void CloseApp(object sender, EventArgs a)
+    private void CloseDialog(object sender, EventArgs a)
     {
         Application.Quit();
     }
