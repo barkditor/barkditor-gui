@@ -6,18 +6,19 @@ using AboutDialog = BarkditorGui.Presentation.GtkComponents.DialogWindows.AboutD
 namespace BarkditorGui.Presentation.GtkComponents.Windows;
 class MainWindow : Window
 {
-    [UI] private readonly MenuItem _aboutButton;
+    [UI] private readonly MenuItem _aboutMenuItem;
 
     public MainWindow() : this(new Builder("MainWindow.glade")) { }
     private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
     {
+        
         var cssProvider = new CssProvider();
         cssProvider.LoadFromPath("../../../CSS/style.css");
         builder.Autoconnect(this);
         StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 800);
         
         DeleteEvent += Window_DeleteEvent;
-        _aboutButton.ActivateItem += AboutButton_Clicked;
+        _aboutMenuItem.Activated += AboutButton_Clicked;
     }
 
     private void Window_DeleteEvent(object sender, DeleteEventArgs a)
@@ -27,6 +28,8 @@ class MainWindow : Window
 
     private void AboutButton_Clicked(object sender, EventArgs a)
     {
-        // todo: implement dialog calling
+        var aboutDialog = new AboutDialog(this);
+        aboutDialog.Run();
+        aboutDialog.Destroy();
     }
 }

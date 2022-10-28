@@ -14,3 +14,10 @@
     font-size: 20px;
     font-weight: bold;
 }
+.mainWindow {
+    min-width: 800px;
+    min-height: 600px;
+}
+a {
+    color: blue;
+}
