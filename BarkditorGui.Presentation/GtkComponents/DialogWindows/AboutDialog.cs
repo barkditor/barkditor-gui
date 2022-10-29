@@ -14,11 +14,11 @@ public class AboutDialog : Dialog
     private AboutDialog(Builder builder) : base(builder.GetRawOwnedObject("AboutDialog"))
     {
         var cssProvider = new CssProvider();
-        cssProvider.LoadFromPath("../../../CSS/style.css");
+        cssProvider.LoadFromPath("./resources/Css/style.css");
         builder.Autoconnect(this);
 
         StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 800);
-        
+
         DeleteEvent += CloseDialog;
     }
 
