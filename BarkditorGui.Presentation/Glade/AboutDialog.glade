@@ -40,7 +40,7 @@
           <object class="GtkImage">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="pixbuf">../../../pic/barkditor-logo.png</property>
+            <property name="pixbuf">./resources/Pic/barkditor-logo.png</property>
           </object>
           <packing>
             <property name="expand">False</property>

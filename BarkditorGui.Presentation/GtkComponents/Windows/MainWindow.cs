@@ -11,12 +11,12 @@ class MainWindow : Window
     public MainWindow() : this(new Builder("MainWindow.glade")) { }
     private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
     {
-        
+
         var cssProvider = new CssProvider();
-        cssProvider.LoadFromPath("../../../CSS/style.css");
+        cssProvider.LoadFromPath("./resources/Css/style.css");
         builder.Autoconnect(this);
         StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 800);
-        
+
         DeleteEvent += Window_DeleteEvent;
         _aboutMenuItem.Activated += AboutButton_Clicked;
     }
