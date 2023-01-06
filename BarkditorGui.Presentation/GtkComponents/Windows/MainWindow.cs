@@ -79,6 +79,7 @@ class MainWindow : Window
         };
         var response = client.GetProjectFiles(request);
         var projectFiles = response.ProjectFiles;
+        _fileTreeStore.Clear();
         
         ShowProjectFiles(path, projectFiles);
 
@@ -89,10 +90,8 @@ class MainWindow : Window
     {
         var folderIcon = IconTheme.Default.LoadIcon("folder", (int) IconSize.Menu, 0);
         var fileIcon = IconTheme.Default.LoadIcon("x-office-document", (int) IconSize.Menu, 0);
-        var directoryName = System.IO.Path.GetFileName(path); 
+        var directoryName = System.IO.Path.GetFileName(path);
         
-        // var rootDirectory = _fileTreeStore.AppendValues($"  {directoryName}", folderIcon);
-        // _codeTextBuffer.Text += "1";
         foreach(var s in fileTree.Files)
         {
             var icon = s.IsDirectory is true ? folderIcon : fileIcon;
