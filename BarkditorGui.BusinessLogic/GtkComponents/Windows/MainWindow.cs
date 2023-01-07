@@ -1,6 +1,3 @@
-using System;
-using System.IO.Compression;
-using System.IO;
 using Gtk;
 using UI = Gtk.Builder.ObjectAttribute;
 using AboutDialog = BarkditorGui.BusinessLogic.GtkComponents.DialogWindows.AboutDialog;
@@ -73,11 +70,11 @@ public class MainWindow : Window
         var path = directoryChooser.Filename;
         using var channel = GrpcChannel.ForAddress("https://localhost:7139");
         var client = new ProjectFiles.ProjectFilesClient(channel);
-        var request = new GetProjectFilesRequest
+        var request = new OpenFolderRequest
         {
             Path = path
         };
-        var response = client.GetProjectFiles(request);
+        var response = client.OpenFolder(request);
         var projectFiles = response.ProjectFiles;
         _fileTreeStore.Clear();
         
@@ -86,7 +83,7 @@ public class MainWindow : Window
         directoryChooser.Destroy();
     }
 
-    private void ShowProjectFiles(string path, GetProjectFilesResponse.Types.FileTree fileTree, TreeIter parent) 
+    private void ShowProjectFiles(string path, OpenFolderResponse.Types.FileTree fileTree, TreeIter parent) 
     {
         var folderIcon = IconTheme.Default.LoadIcon("folder", (int) IconSize.Menu, 0);
         var fileIcon = IconTheme.Default.LoadIcon("x-office-document", (int) IconSize.Menu, 0);
@@ -108,7 +105,7 @@ public class MainWindow : Window
         }
     }
 
-    private void ShowProjectFiles(string path, GetProjectFilesResponse.Types.FileTree fileTree) 
+    private void ShowProjectFiles(string path, OpenFolderResponse.Types.FileTree fileTree) 
     {
         var folderIcon = IconTheme.Default.LoadIcon("folder", (int) IconSize.Menu, 0);
         var fileIcon = IconTheme.Default.LoadIcon("x-office-document", (int) IconSize.Menu, 0);
