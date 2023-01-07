@@ -21,7 +21,7 @@ class MainWindow : Window
     private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
     {
         var cssProvider = new CssProvider();
-        cssProvider.LoadFromPath("./CSS/style.css");
+        cssProvider.LoadFromPath("../../../Css/style.css");
         builder.Autoconnect(this);
         StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 800);
 
