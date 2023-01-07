@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.40.0 -->
 <interface>
-  <requires lib="gtk+" version="3.20"/>
+  <requires lib="gtk+" version="3.24"/>
   <object class="GtkWindow" id="MainWindow">
     <property name="width-request">800</property>
     <property name="height-request">600</property>
@@ -39,6 +39,14 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="label">_Open File</property>
+                        <property name="use-underline">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="_openFolderItem">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label">_Open Folder</property>
                         <property name="use-underline">True</property>
                       </object>
                     </child>
@@ -109,11 +117,13 @@
           <object class="GtkPaned">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
+            <property name="position-set">True</property>
             <child>
               <object class="GtkScrolledWindow">
+                <property name="width-request">50</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
-                <property name="shadow-type">in</property>
+                <property name="window-placement">bottom-left</property>
                 <child>
                   <object class="GtkViewport">
                     <property name="visible">True</property>
@@ -124,19 +134,7 @@
                         <property name="can-focus">False</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkLabel">
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="label" translatable="yes">Files</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkTreeView">
+                          <object class="GtkTreeView" id="_fileTreeView">
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <child internal-child="selection">
@@ -155,17 +153,19 @@
                 </child>
                 <style>
                   <class name="scrollBar"/>
+                  <class name="fileTree"/>
                 </style>
               </object>
               <packing>
-                <property name="resize">False</property>
-                <property name="shrink">True</property>
+                <property name="resize">True</property>
+                <property name="shrink">False</property>
               </packing>
             </child>
             <child>
               <object class="GtkNotebook">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <property name="enable-popup">True</property>
                 <child>
                   <object class="GtkScrolledWindow">
                     <property name="visible">True</property>
@@ -211,10 +211,13 @@
                 <child type="tab">
                   <placeholder/>
                 </child>
+                <style>
+                  <class name="notebook"/>
+                </style>
               </object>
               <packing>
                 <property name="resize">True</property>
-                <property name="shrink">True</property>
+                <property name="shrink">False</property>
               </packing>
             </child>
           </object>

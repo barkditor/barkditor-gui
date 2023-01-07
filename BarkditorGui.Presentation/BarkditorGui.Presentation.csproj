@@ -13,6 +13,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="Protos\projectFiles.proto" GrpcServices="Client" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.21.12" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.51.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.51.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="GtkSharp" Version="3.24.24.*" />
   </ItemGroup>
 

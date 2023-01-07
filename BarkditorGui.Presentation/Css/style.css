@@ -18,6 +18,12 @@
     min-width: 800px;
     min-height: 600px;
 }
+.fileTree {
+    min-width: 100px;
+}
+.notebook {
+    min-width: 600px;
+}
 a {
     color: blue;
 }
