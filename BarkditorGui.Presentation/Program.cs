@@ -1,6 +1,6 @@
 using System;
 using Gtk;
-using BarkditorGui.Presentation.GtkComponents.Windows;
+using BarkditorGui.BusinessLogic.GtkComponents.Windows;
 
 namespace BarkditorGui.Presentation
 {

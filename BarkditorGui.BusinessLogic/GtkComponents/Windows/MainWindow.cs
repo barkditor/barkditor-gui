@@ -3,12 +3,12 @@ using System.IO.Compression;
 using System.IO;
 using Gtk;
 using UI = Gtk.Builder.ObjectAttribute;
-using AboutDialog = BarkditorGui.Presentation.GtkComponents.DialogWindows.AboutDialog;
+using AboutDialog = BarkditorGui.BusinessLogic.GtkComponents.DialogWindows.AboutDialog;
 using Grpc.Net.Client;
 using ProjectFilesClient;
 
-namespace BarkditorGui.Presentation.GtkComponents.Windows;
-class MainWindow : Window
+namespace BarkditorGui.BusinessLogic.GtkComponents.Windows;
+public class MainWindow : Window
 {
     [UI] private readonly MenuItem _aboutMenuItem;
     [UI] private readonly MenuItem _openFolderItem;
@@ -21,7 +21,7 @@ class MainWindow : Window
     private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
     {
         var cssProvider = new CssProvider();
-        cssProvider.LoadFromPath("../../../Css/style.css");
+        cssProvider.LoadFromPath("../BarkditorGui.BusinessLogic/Css/style.css");
         builder.Autoconnect(this);
         StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 800);
 
@@ -112,10 +112,8 @@ class MainWindow : Window
     {
         var folderIcon = IconTheme.Default.LoadIcon("folder", (int) IconSize.Menu, 0);
         var fileIcon = IconTheme.Default.LoadIcon("x-office-document", (int) IconSize.Menu, 0);
-        var directoryName = System.IO.Path.GetFileName(path); 
-        
-        // var rootDirectory = _fileTreeStore.AppendValues($"  {directoryName}", folderIcon);
-        // _codeTextBuffer.Text += "1";
+        var directoryName = System.IO.Path.GetFileName(path);
+
         foreach(var s in fileTree.Files)
         {
             var icon = s.IsDirectory is true ? folderIcon : fileIcon;

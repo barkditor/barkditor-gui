@@ -1,8 +1,6 @@
-using System;
 using Gtk;
-using UI = Gtk.Builder.ObjectAttribute;
 
-namespace BarkditorGui.Presentation.GtkComponents.DialogWindows;
+namespace BarkditorGui.BusinessLogic.GtkComponents.DialogWindows;
 
 public class AboutDialog : Dialog
 {
@@ -14,7 +12,7 @@ public class AboutDialog : Dialog
     private AboutDialog(Builder builder) : base(builder.GetRawOwnedObject("AboutDialog"))
     {
         var cssProvider = new CssProvider();
-        cssProvider.LoadFromPath("../../../Css/style.css");
+        cssProvider.LoadFromPath("../BarkditorGui.BusinessLogic/Css/style.css");
         builder.Autoconnect(this);
 
         StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 800);
