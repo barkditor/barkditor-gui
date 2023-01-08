@@ -83,7 +83,7 @@ public class MainWindow : Window
         directoryChooser.Destroy();
     }
 
-    private void ShowProjectFiles(string path, OpenFolderResponse.Types.FileTree fileTree, TreeIter parent) 
+    private void ShowProjectFiles(string path, FileTree fileTree, TreeIter parent) 
     {
         var folderIcon = IconTheme.Default.LoadIcon("folder", (int) IconSize.Menu, 0);
         var fileIcon = IconTheme.Default.LoadIcon("x-office-document", (int) IconSize.Menu, 0);
@@ -105,7 +105,7 @@ public class MainWindow : Window
         }
     }
 
-    private void ShowProjectFiles(string path, OpenFolderResponse.Types.FileTree fileTree) 
+    private void ShowProjectFiles(string path, FileTree fileTree) 
     {
         var folderIcon = IconTheme.Default.LoadIcon("folder", (int) IconSize.Menu, 0);
         var fileIcon = IconTheme.Default.LoadIcon("x-office-document", (int) IconSize.Menu, 0);
