@@ -18,7 +18,7 @@ public class MainWindow : Window
     private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
     {
         var cssProvider = new CssProvider();
-        cssProvider.LoadFromPath("../BarkditorGui.BusinessLogic/Css/style.css");
+        cssProvider.LoadFromPath("../../../../BarkditorGui.BusinessLogic/Css/style.css");
         builder.Autoconnect(this);
         StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 800);
 
@@ -68,7 +68,7 @@ public class MainWindow : Window
         directoryChooser.Run();
         
         var path = directoryChooser.Filename;
-        using var channel = GrpcChannel.ForAddress("https://localhost:7139");
+        using var channel = GrpcChannel.ForAddress("https://localhost:5001");
         var client = new ProjectFiles.ProjectFilesClient(channel);
         var request = new OpenFolderRequest
         {
