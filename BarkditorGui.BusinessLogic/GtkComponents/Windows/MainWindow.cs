@@ -39,14 +39,14 @@ public class MainWindow : Window
     {
         var empty = new Google.Protobuf.WellKnownTypes.Empty();
         var response = _projectFilesClient.GetSavedProject(empty);
-        var projectFiles = response.ProjectFiles;
+        var projectFiles = response.Files;
         
         if(projectFiles is null)
         {
             return;
         }
 
-        ShowProjectFiles(response.ProjectFiles);
+        ShowProjectFiles(response.Files);
     }
 
     private void FileTreeViewInit() 
@@ -93,7 +93,7 @@ public class MainWindow : Window
             Path = path
         };
         var response = _projectFilesClient.OpenFolder(request);
-        var projectFiles = response.ProjectFiles;
+        var projectFiles = response.Files;
         _fileTreeStore.Clear();
         
         ShowProjectFiles(projectFiles);
