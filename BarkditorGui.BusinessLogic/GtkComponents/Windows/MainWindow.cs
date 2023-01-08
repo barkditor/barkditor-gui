@@ -13,6 +13,8 @@ public class MainWindow : Window
     [UI] private readonly TextView _code;
     [UI] private readonly TextBuffer _codeTextBuffer;
     private readonly TreeStore _fileTreeStore = new TreeStore(typeof(string), typeof(Gdk.Pixbuf));
+    private readonly GrpcChannel _channel = GrpcChannel.ForAddress("https://localhost:5001");
+    private readonly ProjectFiles.ProjectFilesClient _projectFilesClient;
 
     public MainWindow() : this(new Builder("MainWindow.glade")) { }
     private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
@@ -23,22 +25,28 @@ public class MainWindow : Window
         StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, 800);
 
         FileTreeViewInit();
+
+        _projectFilesClient = new ProjectFiles.ProjectFilesClient(_channel);
+        
+        LoadSavedProject();
         
         DeleteEvent += Window_DeleteEvent;
         _aboutMenuItem.Activated += AboutButton_Clicked;
         _openFolderItem.Activated += OpenFolder_Clicked;
     }
 
-    private void Window_DeleteEvent(object sender, DeleteEventArgs a)
+    private void LoadSavedProject() 
     {
-        Application.Quit();
-    }
+        var empty = new Google.Protobuf.WellKnownTypes.Empty();
+        var response = _projectFilesClient.GetSavedProject(empty);
+        var projectFiles = response.ProjectFiles;
+        
+        if(projectFiles is null)
+        {
+            return;
+        }
 
-    private void AboutButton_Clicked(object sender, EventArgs a)
-    {
-        var aboutDialog = new AboutDialog(this);
-        aboutDialog.Run();
-        aboutDialog.Destroy();
+        ShowProjectFiles(response.ProjectFiles);
     }
 
     private void FileTreeViewInit() 
@@ -57,6 +65,18 @@ public class MainWindow : Window
         _fileTreeView.Model = _fileTreeStore;
     }
 
+    private void Window_DeleteEvent(object sender, DeleteEventArgs a)
+    {
+        Application.Quit();
+    }
+
+    private void AboutButton_Clicked(object sender, EventArgs a)
+    {
+        var aboutDialog = new AboutDialog(this);
+        aboutDialog.Run();
+        aboutDialog.Destroy();
+    }
+
     private void OpenFolder_Clicked(object sender, EventArgs a) 
     {
         var directoryChooser = 
@@ -68,62 +88,58 @@ public class MainWindow : Window
         directoryChooser.Run();
         
         var path = directoryChooser.Filename;
-        using var channel = GrpcChannel.ForAddress("https://localhost:5001");
-        var client = new ProjectFiles.ProjectFilesClient(channel);
         var request = new OpenFolderRequest
         {
             Path = path
         };
-        var response = client.OpenFolder(request);
+        var response = _projectFilesClient.OpenFolder(request);
         var projectFiles = response.ProjectFiles;
         _fileTreeStore.Clear();
         
-        ShowProjectFiles(path, projectFiles);
+        ShowProjectFiles(projectFiles);
 
         directoryChooser.Destroy();
     }
 
-    private void ShowProjectFiles(string path, FileTree fileTree, TreeIter parent) 
+    private void ShowProjectFiles(FileTree fileTree, TreeIter parent) 
     {
         var folderIcon = IconTheme.Default.LoadIcon("folder", (int) IconSize.Menu, 0);
         var fileIcon = IconTheme.Default.LoadIcon("x-office-document", (int) IconSize.Menu, 0);
-        var directoryName = System.IO.Path.GetFileName(path);
         
-        foreach(var s in fileTree.Files)
+        foreach(var file in fileTree.Files)
         {
-            var icon = s.IsDirectory is true ? folderIcon : fileIcon;
+            var icon = file.IsDirectory is true ? folderIcon : fileIcon;
             
-            if(s.IsDirectory is false) 
+            if(file.IsDirectory is false) 
             {
-                _fileTreeStore.AppendValues(parent, $"  {s.Name}", icon);
+                _fileTreeStore.AppendValues(parent, $"  {file.Name}", icon);
                 continue;
             }
             
-            var a = _fileTreeStore.AppendValues(parent, $"  {s.Name}", icon);
-            var directoryPath = System.IO.Path.Combine(path, fileTree.Name);
-            if (s.IsDirectory is true) ShowProjectFiles(directoryPath, s, a);
+            var treeIter = _fileTreeStore.AppendValues(parent, $"  {file.Name}", icon);
+            // var directoryPath = System.IO.Path.Combine(path, fileTree.Name);
+            if (file.IsDirectory is true) ShowProjectFiles(file, treeIter);
         }
     }
 
-    private void ShowProjectFiles(string path, FileTree fileTree) 
+    private void ShowProjectFiles(FileTree fileTree) 
     {
         var folderIcon = IconTheme.Default.LoadIcon("folder", (int) IconSize.Menu, 0);
         var fileIcon = IconTheme.Default.LoadIcon("x-office-document", (int) IconSize.Menu, 0);
-        var directoryName = System.IO.Path.GetFileName(path);
 
-        foreach(var s in fileTree.Files)
+        foreach(var file in fileTree.Files)
         {
-            var icon = s.IsDirectory is true ? folderIcon : fileIcon;
+            var icon = file.IsDirectory is true ? folderIcon : fileIcon;
             
-            if(s.IsDirectory is false) 
+            if(file.IsDirectory is false) 
             {
-                _fileTreeStore.AppendValues($"  {s.Name}", icon);
+                _fileTreeStore.AppendValues($"  {file.Name}", icon);
                 continue;
             }
             
-            var a = _fileTreeStore.AppendValues($"  {s.Name}", icon);
-            var directoryPath = System.IO.Path.Combine(path, fileTree.Name);
-            if (s.IsDirectory is true) ShowProjectFiles(directoryPath, s, a);
+            var treeIter = _fileTreeStore.AppendValues($"  {file.Name}", icon);
+            // var directoryPath = System.IO.Path.Combine(path, fileTree.Name);
+            if (file.IsDirectory is true) ShowProjectFiles(file, treeIter);
         }
     }
 }
