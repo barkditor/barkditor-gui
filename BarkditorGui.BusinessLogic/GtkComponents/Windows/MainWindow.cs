@@ -85,19 +85,20 @@ public class MainWindow : Window
             "Cancel", ResponseType.Cancel,
             "Open", ResponseType.Accept);
 
-        directoryChooser.Run();
-        
-        var path = directoryChooser.Filename;
-        var request = new OpenFolderRequest
+        var directoryChooserResponse = directoryChooser.Run();
+        if(directoryChooserResponse == (int) Gtk.ResponseType.Ok)
         {
-            Path = path
-        };
-        var response = _projectFilesClient.OpenFolder(request);
-        var projectFiles = response.Files;
-        _fileTreeStore.Clear();
+            var path = directoryChooser.Filename;
+            var request = new OpenFolderRequest
+            {
+                Path = path
+            };
+            var response = _projectFilesClient.OpenFolder(request);
+            var projectFiles = response.Files;
+            _fileTreeStore.Clear();
         
-        ShowProjectFiles(projectFiles);
-
+            ShowProjectFiles(projectFiles);
+        }
         directoryChooser.Destroy();
     }
 
@@ -117,7 +118,6 @@ public class MainWindow : Window
             }
             
             var treeIter = _fileTreeStore.AppendValues(parent, $"  {file.Name}", icon);
-            // var directoryPath = System.IO.Path.Combine(path, fileTree.Name);
             if (file.IsDirectory is true) ShowProjectFiles(file, treeIter);
         }
     }
@@ -138,7 +138,6 @@ public class MainWindow : Window
             }
             
             var treeIter = _fileTreeStore.AppendValues($"  {file.Name}", icon);
-            // var directoryPath = System.IO.Path.Combine(path, fileTree.Name);
             if (file.IsDirectory is true) ShowProjectFiles(file, treeIter);
         }
     }
